@@ -73,7 +73,7 @@ App will be accesible from the following endpoints:
 Run the following command located in the `k8s` folder:
 
 ```sh
-kubectl apply -f file-api.yml
+kubectl apply -f file-api-part-i.yml
 ```
 
 Run the following command to get the ingress IP address:

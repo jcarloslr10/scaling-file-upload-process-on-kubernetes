@@ -6,11 +6,13 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	// _ "net/http/pprof"
 	"os"
 	"path/filepath"
-	"time"
+
+	"github.com/google/uuid"
 )
 
 const BUFFER_SIZE = 32 << 10     // 32KB
@@ -60,7 +62,9 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tempFile, err := os.Create(fmt.Sprintf("./uploads/%d%s", time.Now().UnixNano(), filepath.Ext(filename)))
+	newUuid := uuid.New()
+	newFileName := strings.Replace(newUuid.String(), "-", "", -1)
+	tempFile, err := os.Create(fmt.Sprintf("./uploads/%s%s", newFileName, filepath.Ext(filename)))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
