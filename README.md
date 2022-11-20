@@ -33,6 +33,8 @@ The application works with the versions listed below. It can work with other eve
     * API manifests are located in the [`file-api-part-i.yml`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/k8s/file-api-part-i.yml) file.
     * Auto-scaling manifest is located in the [`file-api-part-ii.yml`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/k8s/file-api-part-ii.yml) file.
 - Load tests are located in [`load-tests`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/tree/main/load-tests) folder.
+    * Index file [`index.js`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/load-tests/index.js) that acts as the entrypoint to run the load tests.
+    * [`sampleFile.pdf`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/load-tests/sampleFile.pdf) that acts as a sample PDF file to upload when running load tests.
 
 ## Install
 
