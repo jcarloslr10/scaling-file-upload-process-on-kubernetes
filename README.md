@@ -168,7 +168,7 @@ As output of the load test, two reports will be generated:
 - Console report.
 - HTML report (result.html).
 
-These reports show a set of metrics and counters related to requests sent to the API to upload documents.
+These reports show a set of metrics and counters related to requests sent to the API to upload PDF files.
 
 ## Author
 
