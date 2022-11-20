@@ -15,7 +15,24 @@ The application works with the versions listed below. It can work with other eve
 
 - Go 1.19 (https://go.dev/doc/install)
 - Docker 20.10 (https://docs.docker.com/get-docker/)
-- Minikube 1.27.0 (https://minikube.sigs.k8s.io/docs/start/)
+- Minikube 1.27.0 (https://minikube.sigs.k8s.io/docs/start/) with the following enabled addons:
+    * dashboard: `minikube dashboard`
+    * default-storageclass
+    * ingress: `minikube addons enable ingress`
+    * metrics-server: `minikube addons enable metrics-server`
+    * storage-provisioner
+- K6 (https://k6.io/docs/)
+
+## Project components
+
+- REST API developed in Go to upload PDF files is located in `file-api` folder.
+    * Index page (`index.html`) to render a form to upload a PDF file.
+    * API endpoints to handle requests (`main.go`).
+    * Docker support using `Dockerfile` and `docker-compose.yml` files.
+- Manifests (`.yml`) to deploy the API in Kubernetes cluster.
+    * API manifests are located in the `file-api-part-i.yml` file.
+    * Auto-scaling manifest is located in the `file-api-part-ii.yml` file.
+- Load tests are located in `load-tests` folder.
 
 ## Install
 
@@ -31,14 +48,19 @@ Run all the following commands located in the `file-api` folder.
 
 ### Docker environment
 
-To use local Docker images in Minikube run:
+To use local Docker images in Minikube run the following statements depending on the OS:
 
-```sh
-minikube docker-env
-minikube docker-env | Invoke-Expression
-```
+- Windows
+  ```sh
+  minikube docker-env | Invoke-Expression
+  ```
 
-To build local Docker image run:
+- Linux
+  ```sh
+  eval $(minikube docker-env)
+  ```
+
+Then, to build local Docker image run:
 
 ```sh
 docker build --tag local/file-api:latest .
@@ -109,6 +131,44 @@ App will be accesible from the following endpoints:
 
 - Index endpoint (GET) on: `http://fileapi.com`
 - Upload endpoint (POST) on: `http://fileapi.com/upload`
+
+## Load tests
+
+The K6 tool helps us simulate a heavy workload scenario to allow HPA (Horizontal Pod Autoscaler) to come into the picture.
+
+Run the following command to start the load test:
+
+```
+k6 run .\index.js
+```
+
+Then, run the following command to watch the current status of the deployment using HPA:
+
+```
+kubectl get hpa -n file-api --watch
+```
+
+If you want to simulate a heavier workload, you can go to `load-tests/index.js` and adjust the parameters of the `fileapi` scenario according to the K6 documentation (https://k6.io/docs/using-k6/scenarios/). Here is the specific code:
+
+```
+export const options = {
+    discardResponseBodies: true,
+    scenarios: {
+        fileapi: {
+            executor: 'constant-vus',
+            vus: 20,
+            duration: '1m00s',
+        },
+    },
+};
+```
+
+As output of the load test, two reports will be generated:
+
+- Console report.
+- HTML report (result.html).
+
+These reports show a set of metrics and counters related to requests sent to the API to upload documents.
 
 ## Author
 
