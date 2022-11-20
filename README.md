@@ -13,26 +13,26 @@
 
 The application works with the versions listed below. It can work with other even lower versions although it has not been tested.
 
-- Go 1.19 (https://go.dev/doc/install)
-- Docker 20.10 (https://docs.docker.com/get-docker/)
-- Minikube 1.27.0 (https://minikube.sigs.k8s.io/docs/start/) with the following enabled addons:
+- [Go 1.19](https://go.dev/doc/install/)
+- [Docker 20.10](https://docs.docker.com/get-docker/)
+- [Minikube 1.27.0](https://minikube.sigs.k8s.io/docs/start/) with the following enabled addons:
     * dashboard: `minikube dashboard`
     * default-storageclass
     * ingress: `minikube addons enable ingress`
     * metrics-server: `minikube addons enable metrics-server`
     * storage-provisioner
-- K6 (https://k6.io/docs/)
+- [K6](https://k6.io/docs/)
 
 ## Project components
 
 - REST API developed in Go to upload PDF files is located in `file-api` folder.
-    * Index page (`index.html`) to render a form to upload a PDF file.
-    * API endpoints to handle requests (`main.go`).
-    * Docker support using `Dockerfile` and `docker-compose.yml` files.
+    * Index page ([`index.html`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/file-api/index.html)) to render a form to upload a PDF file.
+    * API endpoints to handle requests ([`main.go`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/file-api/main.go)).
+    * Docker support using [`Dockerfile`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/file-api/Dockerfile) and [`docker-compose.yml`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/file-api/docker-compose.yml) files.
 - Manifests (`.yml`) to deploy the API in Kubernetes cluster.
-    * API manifests are located in the `file-api-part-i.yml` file.
-    * Auto-scaling manifest is located in the `file-api-part-ii.yml` file.
-- Load tests are located in `load-tests` folder.
+    * API manifests are located in the [`file-api-part-i.yml`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/k8s/file-api-part-i.yml) file.
+    * Auto-scaling manifest is located in the [`file-api-part-ii.yml`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/k8s/file-api-part-ii.yml) file.
+- Load tests are located in [`load-tests`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/tree/main/load-tests) folder.
 
 ## Install
 
@@ -148,7 +148,7 @@ Then, run the following command to watch the current status of the deployment us
 kubectl get hpa -n file-api --watch
 ```
 
-If you want to simulate a heavier workload, you can go to `load-tests/index.js` and adjust the parameters of the `fileapi` scenario according to the K6 documentation (https://k6.io/docs/using-k6/scenarios/). Here is the specific code:
+If you want to simulate a heavier workload, you can go to [`index.js`](https://github.com/jcarloslr10/scaling-file-upload-process-on-kubernetes/blob/main/load-tests/index.js#L9) file located in `load-tests` folder and adjust the parameters of the `fileapi` scenario according to the K6 documentation (https://k6.io/docs/using-k6/scenarios/). Here is the specific code:
 
 ```
 export const options = {
