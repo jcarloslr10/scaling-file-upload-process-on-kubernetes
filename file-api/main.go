@@ -85,7 +85,10 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Upload successful")
+	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "application/text")
+	w.Write([]byte("Upload successful"))
+	return
 }
 
 func main() {
